@@ -3,12 +3,16 @@ extends CharacterBody3D
 var _speed
 @export var WALK_SPEED = 5.0
 @export var JUMP_VELOCITY = 4.5
-
+@export_range(5,10,0.1) var CROUCH_SPEED : float = 7.0
 #Mouse Rotation
 @export var MOUSE_SENSITIVITY : float = 0.10
 @export var TILT_LOWER_LIMIT := deg_to_rad(-90.0)
 @export var TILT_UPPER_LIMIT := deg_to_rad(90.0)
+
 @export var CAMERA_CONTROLLER : Camera3D
+@export var ANIMATIONPLAYER : AnimationPlayer
+@export var CROUCH_SHAPECAST : Node3D
+
 
 # Head Bobbing Variables
 @export var BOB_FREQ: float = 2.0
@@ -23,6 +27,9 @@ var _tilt_input : float
 var _player_rotation : Vector3
 var _camera_rotation : Vector3
 
+#Crouching
+var _is_crouching : bool = false
+
 #Get gravity to be synced with RigidBody Node
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -34,8 +41,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		print(Vector2(_rotation_input,_tilt_input))
 
 func _input(event):
+	#Exit Game
 	if event.is_action_pressed("exit"):
 		get_tree().quit()
+	
+	#Crouch
+	if event.is_action_pressed("crouch"):
+		toggle_crouch()
 
 func _update_camera(delta):
 	#Rotate camera using euler rotation
@@ -56,7 +68,8 @@ func _update_camera(delta):
 	
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	CAMERA_CONTROLLER = $Head/Camera3D
+	#add crouch check collison exception for CharBody3D node
+	CROUCH_SHAPECAST.add_exception($".")
 	_speed = WALK_SPEED
 	
 func _physics_process(delta):
@@ -93,7 +106,16 @@ func _physics_process(delta):
 	CAMERA_CONTROLLER.transform.origin = _headbob(t_bob)
 		
 	move_and_slide()
-	
+
+#toggle crouch
+func toggle_crouch():
+	if _is_crouching == true and CROUCH_SHAPECAST.is_colliding() == false:
+		ANIMATIONPLAYER.play("Crouch", -1, -CROUCH_SPEED, true)
+	elif _is_crouching == false:
+		ANIMATIONPLAYER.play("Crouch", -1, CROUCH_SPEED)
+	_is_crouching = !_is_crouching
+		
+#Head Bobbing
 func _headbob(time: float) -> Vector3:
 	var pos = Vector3.ZERO
 	pos.y = sin(time * BOB_FREQ) * BOB_AMP
