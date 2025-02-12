@@ -1,0 +1,167 @@
+[gd_scene load_steps=14 format=3 uid="uid://qwqdd0fbxrpb"]
+
+[ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_vxofn"]
+[ext_resource type="Texture2D" uid="uid://c0rhtjsckmme3" path="res://Assets/Image Assets/Main Menu.png" id="2_veki0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fae22"]
+texture = ExtResource("2_veki0")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g3knk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4jcqe"]
+bg_color = Color(0.380041, 0.571233, 0.321032, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4ats"]
+bg_color = Color(0.264352, 0.410206, 0.21915, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_35lek"]
+bg_color = Color(0.309804, 0.47451, 0.258824, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gmoie"]
+bg_color = Color(0.116893, 0.273153, 0.802837, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0vvtn"]
+bg_color = Color(0.0630827, 0.174482, 0.565634, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_svwqg"]
+bg_color = Color(0.0784314, 0.203922, 0.643137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mkhvr"]
+bg_color = Color(0.962135, 0.0324589, 0.2145, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c0k3v"]
+bg_color = Color(0.679525, 0.00881503, 0.138201, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jj56h"]
+bg_color = Color(0.823529, 0.0156863, 0.176471, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Main Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vxofn")
+
+[node name="MenuBG" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_fae22")
+
+[node name="TitleScreen" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.383681
+anchor_bottom = 1.0
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Title Name" type="Label" parent="TitleScreen"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.28
+anchor_right = 0.5
+anchor_bottom = 0.28
+offset_left = -153.0
+offset_top = -70.44
+offset_right = 165.0
+offset_bottom = 70.56
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "PROJECT: 
+              ITERA"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.00452489
+anchor_top = 0.470679
+anchor_right = 0.971
+anchor_bottom = 0.989
+offset_right = 13.818
+offset_bottom = 0.127991
+theme_override_constants/separation = 40
+metadata/_edit_use_anchors_ = true
+
+[node name="Play Button" type="Button" parent="TitleScreen/VBoxContainer"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxEmpty_g3knk")
+theme_override_styles/hover = SubResource("StyleBoxFlat_4jcqe")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_o4ats")
+theme_override_styles/normal = SubResource("StyleBoxFlat_35lek")
+text = "PLAY"
+
+[node name="Options Button" type="Button" parent="TitleScreen/VBoxContainer"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 40
+theme_override_styles/hover = SubResource("StyleBoxFlat_gmoie")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0vvtn")
+theme_override_styles/normal = SubResource("StyleBoxFlat_svwqg")
+text = "OPTIONS
+"
+
+[node name="Exit Button" type="Button" parent="TitleScreen/VBoxContainer"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 40
+theme_override_styles/hover = SubResource("StyleBoxFlat_mkhvr")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_c0k3v")
+theme_override_styles/normal = SubResource("StyleBoxFlat_jj56h")
+text = "QUIT
+"
+
+[connection signal="pressed" from="TitleScreen/VBoxContainer/Play Button" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="TitleScreen/VBoxContainer/Options Button" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="TitleScreen/VBoxContainer/Exit Button" to="." method="_on_exit_button_pressed"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cpp48ap31of5p"]
 
-[ext_resource type="PackedScene" uid="uid://br1fdpb7yan83" path="res://Assets/player.tscn" id="1_unbsp"]
+[ext_resource type="PackedScene" uid="uid://br1fdpb7yan83" path="res://Assets/Scene Assets/player.tscn" id="1_unbsp"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7ie3g"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -37,7 +37,7 @@ size = Vector3(89.2252, 0.002, 78.0989)
 material = SubResource("StandardMaterial3D_qfnny")
 
 [node name="Player" parent="." instance=ExtResource("1_unbsp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04226, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0938548, -2)
 
 [node name="Wall1" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.74177, 2.53869, 37.0211)
@@ -72,7 +72,7 @@ size = Vector3(3.4716, 0.947969, 5.474)
 material = SubResource("StandardMaterial3D_l2pqf")
 
 [node name="BigBox" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.01141, 1.27483, -13.2032)
+transform = Transform3D(1, 0, -0.000907571, 0, 1, 0, 0.000907571, 0, 1, -3.51962, 1.29393, -13.8654)
 use_collision = true
 size = Vector3(5.75391, 2.41296, 6.76721)
 material = SubResource("StandardMaterial3D_l2pqf")
