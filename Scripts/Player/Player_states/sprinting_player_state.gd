@@ -11,4 +11,10 @@ func update(delta):
 	
 	if Input.is_action_just_released("sprint"):
 		transition.emit("WalkingPlayerState")
+		
+	if Input.is_action_just_released("sprint") and PLAYER.velocity.length() == 0:
+		transition.emit("IdlePlayerState")
+	
+	if Input.is_action_just_pressed("crouch") and PLAYER.velocity.length() > 6:
+		transition.emit("SlidingPlayerState")
 	

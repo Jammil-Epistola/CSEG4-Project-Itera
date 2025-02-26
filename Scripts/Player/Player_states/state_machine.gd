@@ -19,7 +19,7 @@ func _ready():
 				print("ERROR: Owner is not a Player!")
 
 	if CURRENT_STATE:
-		CURRENT_STATE.enter()
+		CURRENT_STATE.enter(null)
 
 func _process(delta):
 	if CURRENT_STATE:
@@ -30,14 +30,12 @@ func _process(delta):
 func _physics_process(delta):
 	if CURRENT_STATE:
 		CURRENT_STATE.physics_update(delta)
-	else:
-		print("ERROR: CURRENT_STATE is NULL!")
 
 func on_child_transition(new_state_name: StringName) -> void:
 	var new_state = states.get(new_state_name)
 	if new_state != null and new_state != CURRENT_STATE:
 		CURRENT_STATE.exit()
-		new_state.enter()
+		new_state.enter(CURRENT_STATE)
 		CURRENT_STATE = new_state
 	else:
 		push_warning("State does not exist: " + new_state_name)

@@ -6,7 +6,7 @@ var DECELERATION : float = 0.25
 
 func update(delta):
 	PLAYER.update_gravity(delta)
-	PLAYER.update_input(SPEED, PLAYER.ACCELERATION, PLAYER.DECELERATION)
+	PLAYER.update_input(SPEED, ACCELERATION, DECELERATION)
 	PLAYER.update_velocity()
 	
 	if Input.is_action_just_pressed("crouch") and Global.player.is_on_floor():

@@ -7,22 +7,30 @@ class_name CrouchingPlayerState extends PlayerMovementState
 
 @onready var CROUCH_SHAPECAST: ShapeCast3D = %ShapeCast3D
 
-func enter() -> void:
-	print("Entering Crouch State")  
-	print("PLAYER:", PLAYER)  
-	print("PLAYER ANIMATION:", PLAYER.ANIMATIONPLAYER)  
+var RELEASED : bool = false
 
-	if PLAYER.ANIMATIONPLAYER:
-		PLAYER.ANIMATIONPLAYER.play("Crouch", -1.0, CROUCH_SPEED)
+func enter(previous_state) -> void:
+	print("Entering Crouch State")   
+	if previous_state.name != "SlidingPlayerState":
+		ANIMATION.play("Crouch", -1.0, CROUCH_SPEED)
+	elif previous_state.name == "SlidingPlayerState":
+		ANIMATION.current_animation = "Crouch"
+		ANIMATION.seek(1.0, true)
 	else:
 		print("ERROR: ANIMATIONPLAYER is NULL in CrouchingPlayerState!")
 
+func exit() -> void:
+	RELEASED = false
+
 func update(delta):
 	PLAYER.update_gravity(delta)
-	PLAYER.update_input(SPEED, PLAYER.ACCELERATION, PLAYER.DECELERATION)
+	PLAYER.update_input(SPEED, ACCELERATION, DECELERATION)
 	PLAYER.update_velocity()
 	
 	if Input.is_action_just_released("crouch"):
+		uncrouch()
+	elif Input.is_action_just_pressed("crouch") == false and RELEASED == false:
+		RELEASED = true
 		uncrouch()
 
 func uncrouch():
@@ -31,7 +39,10 @@ func uncrouch():
 		if PLAYER.ANIMATIONPLAYER:
 			PLAYER.ANIMATIONPLAYER.play("Crouch", -1.0, -CROUCH_SPEED * 1.5, true)
 			await PLAYER.ANIMATIONPLAYER.animation_finished  
-			transition.emit("IdlePlayerState")
+			if PLAYER.velocity.length() == 0:
+				transition.emit("IdlePlayerState")
+			else:
+				transition.emit("WalkingPlayerState")
 		else:
 			print("ERROR: ANIMATIONPLAYER is NULL during uncrouch!")
 	else:
