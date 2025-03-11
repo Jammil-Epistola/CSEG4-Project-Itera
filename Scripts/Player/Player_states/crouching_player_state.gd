@@ -27,11 +27,13 @@ func update(delta):
 	PLAYER.update_input(SPEED, ACCELERATION, DECELERATION)
 	PLAYER.update_velocity()
 	
-	if Input.is_action_just_released("crouch"):
-		uncrouch()
-	elif Input.is_action_just_pressed("crouch") == false and RELEASED == false:
+	# Only uncrouch if the key is released and it was previously held
+	if !Input.is_action_pressed("crouch") and RELEASED == false:
 		RELEASED = true
 		uncrouch()
+
+	if Input.is_action_pressed("crouch"):
+		RELEASED = false  # Reset RELEASED if crouch is still held
 
 func uncrouch():
 	if !CROUCH_SHAPECAST.is_colliding():

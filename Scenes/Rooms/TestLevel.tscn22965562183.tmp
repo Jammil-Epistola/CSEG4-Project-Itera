@@ -53,7 +53,7 @@ mesh = SubResource("PlaneMesh_y5mfq")
 shape = SubResource("ConcavePolygonShape3D_ofd1t")
 
 [node name="ProtoBox" parent="." instance=ExtResource("3_1uscm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.48571, -0.0748043, -3.79685)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.4708, 1.90735e-06, 1.14951)
 
 [node name="Wall_notrunnable" parent="." instance=ExtResource("4_iqltu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24731, 0, 18.0311)
@@ -62,10 +62,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24731, 0, 18.0311)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.77472, -0.234807, 18.4029)
 
 [node name="Proto_Platform" parent="." instance=ExtResource("5_iqltu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.34365, 1.73592, -1.35157)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.2036, 1.73592, -1.35157)
 
 [node name="Proto_Platform2" parent="." instance=ExtResource("5_iqltu")]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 14.4728, 2.65915, -2.23347)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.9388, 3.12727, -4.9577)
 
 [node name="Wall_Runnable" parent="." instance=ExtResource("6_e4wn3")]
-transform = Transform3D(-0.199135, 0, -2.99338, 0, 3, 0, 2.99338, 0, -0.199135, 15.3001, 1.18182, -16.4815)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 3.15936, 9.53674e-07, -10.0282)

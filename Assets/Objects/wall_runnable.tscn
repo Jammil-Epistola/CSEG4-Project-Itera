@@ -1,0 +1,85 @@
+[gd_scene load_steps=8 format=3 uid="uid://duwyg7fddy5x0"]
+
+[ext_resource type="Texture2D" uid="uid://b3o1rcmdv6m64" path="res://PNG/Red/texture_01.png" id="1_8xuj7"]
+[ext_resource type="Texture2D" uid="uid://dru8vulnjcnu8" path="res://PNG/Orange/texture_04.png" id="2_5sxad"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8xuj7"]
+albedo_texture = ExtResource("1_8xuj7")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_5sxad"]
+material = SubResource("StandardMaterial3D_8xuj7")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ifvlg"]
+size = Vector3(5.9397, 1.93237, 0.11126)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dbd4h"]
+albedo_texture = ExtResource("2_5sxad")
+
+[sub_resource type="QuadMesh" id="QuadMesh_jxvpm"]
+material = SubResource("StandardMaterial3D_dbd4h")
+
+[node name="Wall_Runnable" type="StaticBody3D" groups=["RunnableWall"]]
+collision_layer = 64
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(5.90322, 0, 0, 0, 1.93786, 0, 0, 0, 0.0695522, 0, 0.986297, 0)
+layers = 64
+mesh = SubResource("BoxMesh_5sxad")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00831223, 0.985474, 0.00421568)
+shape = SubResource("BoxShape3D_ifvlg")
+
+[node name="ArrowLine" type="Node3D" parent="."]
+transform = Transform3D(1.02829, 0, 0, 0, 0.657, 0, 0, 0, 0.024, -0.25608, 0.412195, 0.117369)
+
+[node name="Arrows" type="MeshInstance3D" parent="ArrowLine"]
+transform = Transform3D(0.69294, 0.120207, 0, -0.724588, 0.114956, 0, 0, 0, 1.72832, -2.02739, 0.70001, 0.0427425)
+mesh = SubResource("QuadMesh_jxvpm")
+skeleton = NodePath("../..")
+
+[node name="Arrows2" type="MeshInstance3D" parent="ArrowLine"]
+transform = Transform3D(0.723753, -0.115101, 0, 0.693812, 0.120068, 0, 0, 0, 1.72832, -2.00424, 1.29855, 0.0427425)
+mesh = SubResource("QuadMesh_jxvpm")
+skeleton = NodePath("../..")
+
+[node name="ArrowLine2" type="Node3D" parent="."]
+transform = Transform3D(1.02829, 0, 0, 0, 0.657, 0, 0, 0, 0.024, 1.16246, 0.412195, 0.117369)
+
+[node name="Arrows" type="MeshInstance3D" parent="ArrowLine2"]
+transform = Transform3D(0.69294, 0.120207, 0, -0.724588, 0.114956, 0, 0, 0, 1.72832, -2.02739, 0.70001, 0.0427425)
+mesh = SubResource("QuadMesh_jxvpm")
+skeleton = NodePath("../..")
+
+[node name="Arrows2" type="MeshInstance3D" parent="ArrowLine2"]
+transform = Transform3D(0.723753, -0.115101, 0, 0.693812, 0.120068, 0, 0, 0, 1.72832, -2.00424, 1.29855, 0.0427425)
+mesh = SubResource("QuadMesh_jxvpm")
+skeleton = NodePath("../..")
+
+[node name="ArrowLine3" type="Node3D" parent="."]
+transform = Transform3D(1.02829, 0, 0, 0, 0.657, 0, 0, 0, 0.024, 2.72267, 0.412195, 0.117369)
+
+[node name="Arrows" type="MeshInstance3D" parent="ArrowLine3"]
+transform = Transform3D(0.69294, 0.120207, 0, -0.724588, 0.114956, 0, 0, 0, 1.72832, -2.02739, 0.70001, 0.0427425)
+mesh = SubResource("QuadMesh_jxvpm")
+skeleton = NodePath("../..")
+
+[node name="Arrows2" type="MeshInstance3D" parent="ArrowLine3"]
+transform = Transform3D(0.723753, -0.115101, 0, 0.693812, 0.120068, 0, 0, 0, 1.72832, -2.00424, 1.29855, 0.0427425)
+mesh = SubResource("QuadMesh_jxvpm")
+skeleton = NodePath("../..")
+
+[node name="ArrowLine4" type="Node3D" parent="."]
+transform = Transform3D(1.02829, 0, 0, 0, 0.657, 0, 0, 0, 0.024, 4.13775, 0.412195, 0.117369)
+
+[node name="Arrows" type="MeshInstance3D" parent="ArrowLine4"]
+transform = Transform3D(0.69294, 0.120207, 0, -0.724588, 0.114956, 0, 0, 0, 1.72832, -2.02739, 0.70001, 0.0427425)
+mesh = SubResource("QuadMesh_jxvpm")
+skeleton = NodePath("../..")
+
+[node name="Arrows2" type="MeshInstance3D" parent="ArrowLine4"]
+transform = Transform3D(0.723753, -0.115101, 0, 0.693812, 0.120068, 0, 0, 0, 1.72832, -2.00424, 1.29855, 0.0427425)
+mesh = SubResource("QuadMesh_jxvpm")
+skeleton = NodePath("../..")

@@ -68,4 +68,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.34365, 1.73592, -1.35157)
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 14.4728, 2.65915, -2.23347)
 
 [node name="Wall_Runnable" parent="." instance=ExtResource("6_e4wn3")]
-transform = Transform3D(-0.199135, 0, -2.99338, 0, 3, 0, 2.99338, 0, -0.199135, 15.3001, 1.18182, -16.4815)
+transform = Transform3D(-0.199135, 0, -2.99338, 0, 3, 0, 2.99338, 0, -0.199135, 18.3817, 1.18182, -16.4815)

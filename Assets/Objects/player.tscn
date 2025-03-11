@@ -1,16 +1,19 @@
-[gd_scene load_steps=21 format=3 uid="uid://br1fdpb7yan83"]
+[gd_scene load_steps=26 format=3 uid="uid://br1fdpb7yan83"]
 
-[ext_resource type="Script" path="res://Scripts/Player/player_controller.gd" id="1_uf6o1"]
-[ext_resource type="Script" path="res://Scripts/Player/reticle.gd" id="2_f82lh"]
+[ext_resource type="Script" uid="uid://do2s0tf3bcqob" path="res://Scripts/Player/player_controller.gd" id="1_uf6o1"]
+[ext_resource type="Script" uid="uid://dfcraafnehyqn" path="res://Scripts/Player/reticle.gd" id="2_f82lh"]
 [ext_resource type="Theme" uid="uid://di4uxb41akeps" path="res://UI/themes/debug.tres" id="3_latgb"]
-[ext_resource type="Script" path="res://Scripts/Others/debug.gd" id="4_tel0m"]
-[ext_resource type="Script" path="res://Scripts/Player/Player_states/sprinting_player_state.gd" id="5_2whai"]
-[ext_resource type="Script" path="res://Scripts/Player/Player_states/state_machine.gd" id="5_wlj8n"]
-[ext_resource type="Script" path="res://Scripts/Player/Player_states/idle_player_state.gd" id="6_tsd0u"]
-[ext_resource type="Script" path="res://Scripts/Player/Player_states/crouching_player_state.gd" id="6_unrbl"]
-[ext_resource type="Script" path="res://Scripts/Player/Player_states/sliding_player_state.gd" id="7_qm4tl"]
-[ext_resource type="Script" path="res://Scripts/Player/Player_states/walking_player_state.gd" id="7_up7bs"]
-[ext_resource type="Script" path="res://Scripts/Player/Player_states/jumping_player_state.gd" id="8_4whux"]
+[ext_resource type="Script" uid="uid://c8j0hkh6527yk" path="res://Scripts/Others/debug.gd" id="4_tel0m"]
+[ext_resource type="Script" uid="uid://qv1gpd1fw8fn" path="res://Scripts/Player/Player_states/sprinting_player_state.gd" id="5_2whai"]
+[ext_resource type="Script" uid="uid://btpknlnmhv2ge" path="res://Scripts/Player/Player_states/state_machine.gd" id="5_wlj8n"]
+[ext_resource type="Script" uid="uid://cmqcw6nib5rmj" path="res://Scripts/Player/Player_states/idle_player_state.gd" id="6_tsd0u"]
+[ext_resource type="Script" uid="uid://bnps6pdqffq2w" path="res://Scripts/Player/Player_states/crouching_player_state.gd" id="6_unrbl"]
+[ext_resource type="Script" uid="uid://bj8npgklwkea5" path="res://Scripts/Player/Player_states/sliding_player_state.gd" id="7_qm4tl"]
+[ext_resource type="Script" uid="uid://bicrywb4mqjsr" path="res://Scripts/Player/Player_states/walking_player_state.gd" id="7_up7bs"]
+[ext_resource type="Script" uid="uid://kye53ldwot7x" path="res://Scripts/Player/Player_states/jumping_player_state.gd" id="8_4whux"]
+[ext_resource type="Script" uid="uid://ckqw7s26q3j6r" path="res://Scripts/Player/Player_states/falling_player_state.gd" id="9_ihh5j"]
+[ext_resource type="Script" uid="uid://dx7nmiy3wodd6" path="res://Scripts/Player/Player_states/wall_run_player_state.gd" id="10_aypfj"]
+[ext_resource type="Script" uid="uid://bhtuxx8blkkjy" path="res://Assets/Objects/wall_jump_player_state.gd" id="11_wnki6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fifh5"]
 
@@ -57,6 +60,22 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(0, 1.5, 0), Vector3(0, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ihh5j"]
+resource_name = "HardFall"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Head:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1.5, 0), Vector3(0, 1.25, 0), Vector3(0, 1.5, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_ep1yi"]
@@ -219,7 +238,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(1, 5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [6.0, 5.0]
+"values": [6.0, 4.0]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -248,11 +267,29 @@ tracks/7/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_aypfj"]
+resource_name = "SoftFall"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Head:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1.5, 0), Vector3(0, 1.3, 0), Vector3(0, 1.5, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uoclx"]
 _data = {
-"Crouch": SubResource("Animation_kjyey"),
-"RESET": SubResource("Animation_ep1yi"),
-"Sliding": SubResource("Animation_y81fw")
+&"Crouch": SubResource("Animation_kjyey"),
+&"HardFall": SubResource("Animation_ihh5j"),
+&"RESET": SubResource("Animation_ep1yi"),
+&"Sliding": SubResource("Animation_y81fw"),
+&"SoftFall": SubResource("Animation_aypfj")
 }
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5hrs7"]
@@ -270,6 +307,8 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "ANIMATIONPLAYER", "CROUCH_SHAPECAST")]
+collision_layer = 2
+collision_mask = 127
 script = ExtResource("1_uf6o1")
 CAMERA_CONTROLLER = NodePath("Head/Camera3D")
 ANIMATIONPLAYER = NodePath("AnimationPlayer")
@@ -291,8 +330,20 @@ current = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_uoclx")
+&"": SubResource("AnimationLibrary_uoclx")
 }
+
+[node name="WallCheck" type="Node3D" parent="."]
+
+[node name="LeftWallCheck" type="RayCast3D" parent="WallCheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.5, 0)
+target_position = Vector3(-1.5, 0, 0)
+collision_mask = 64
+
+[node name="RightWallCheck" type="RayCast3D" parent="WallCheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)
+target_position = Vector3(1.5, 0, 0)
+collision_mask = 64
 
 [node name="ShapeCast3D" type="ShapeCast3D" parent="."]
 unique_name_in_owner = true
@@ -312,6 +363,7 @@ script = ExtResource("6_tsd0u")
 script = ExtResource("7_up7bs")
 
 [node name="SprintingPlayerState" type="Node" parent="PlayerStateMachine"]
+unique_name_in_owner = true
 script = ExtResource("5_2whai")
 
 [node name="CrouchingPlayerState" type="Node" parent="PlayerStateMachine"]
@@ -323,6 +375,15 @@ SPEED = null
 
 [node name="JumpingPlayerState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("8_4whux")
+
+[node name="FallingPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("9_ihh5j")
+
+[node name="WallRunPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("10_aypfj")
+
+[node name="WallJumpPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("11_wnki6")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -337,7 +398,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 
-[node name="Reticle" type="CenterContainer" parent="CanvasLayer/UserInterface"]
+[node name="Reticle" type="CenterContainer" parent="CanvasLayer/UserInterface" node_paths=PackedStringArray("RETICLE_LINES", "PLAYER_CONTROLLER")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -351,6 +412,9 @@ offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_f82lh")
+RETICLE_LINES = [NodePath("TopLine"), NodePath("RightLine"), NodePath("BottomLine"), NodePath("LeftLine")]
+PLAYER_CONTROLLER = NodePath("../../..")
+RETICLE_DISTANCE = 3.0
 
 [node name="TopLine" type="Line2D" parent="CanvasLayer/UserInterface/Reticle"]
 points = PackedVector2Array(0, -5, 0, -15)

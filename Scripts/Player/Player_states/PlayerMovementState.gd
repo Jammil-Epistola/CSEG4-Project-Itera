@@ -6,7 +6,6 @@ var ANIMATION : AnimationPlayer
 func _ready() -> void:
 	await owner.ready
 	PLAYER = owner as Player
-	
 	if PLAYER:
 		ANIMATION = PLAYER.ANIMATIONPLAYER 
 	else:

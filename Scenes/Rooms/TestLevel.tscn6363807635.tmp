@@ -1,0 +1,109 @@
+[gd_scene load_steps=12 format=3 uid="uid://cpp48ap31of5p"]
+
+[ext_resource type="PackedScene" uid="uid://br1fdpb7yan83" path="res://Assets/Objects/player.tscn" id="1_unbsp"]
+[ext_resource type="Texture2D" uid="uid://dgd672l2400ck" path="res://PNG/Dark/texture_01.png" id="2_lhfdv"]
+[ext_resource type="PackedScene" uid="uid://dfvqqxkqlrdjg" path="res://Assets/Objects/ProtoBox.tscn" id="3_iar3i"]
+[ext_resource type="PackedScene" uid="uid://c7lfk8ahu7d2m" path="res://Assets/Objects/ProtoPlatform.tscn" id="4_1t188"]
+[ext_resource type="PackedScene" uid="uid://x2a3lghoyq11" path="res://Assets/Objects/ProtoWall.tscn" id="5_naufr"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7ie3g"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_6piuw"]
+sky_material = SubResource("ProceduralSkyMaterial_7ie3g")
+
+[sub_resource type="Environment" id="Environment_27lbr"]
+background_mode = 2
+sky = SubResource("Sky_6piuw")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4nakh"]
+albedo_texture = ExtResource("2_lhfdv")
+uv1_scale = Vector3(10, 10, 10)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_y5mfq"]
+lightmap_size_hint = Vector2i(1002, 1002)
+material = SubResource("StandardMaterial3D_4nakh")
+size = Vector2(200, 200)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ofd1t"]
+data = PackedVector3Array(100, 0, 100, -100, 0, 100, 100, 0, -100, -100, 0, 100, -100, 0, -100, 100, 0, -100)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_27lbr")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, -8.61919, 9.79599, -0.156406)
+shadow_enabled = true
+
+[node name="PlayerController" parent="." instance=ExtResource("1_unbsp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5173, 55.1018, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_y5mfq")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_ofd1t")
+
+[node name="Box" parent="." instance=ExtResource("3_iar3i")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -3.53661, 2.62695, 0.42108)
+
+[node name="Box2" parent="." instance=ExtResource("3_iar3i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.70747, 0.433047, -10.035)
+
+[node name="Box3" parent="." instance=ExtResource("3_iar3i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.363, 4.72863, -8.63122)
+
+[node name="Platfrom" parent="." instance=ExtResource("4_1t188")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.605323, 1.87433, -15.2689)
+size = Vector3(9.07239, 0.147461, 6.00244)
+
+[node name="Platfrom2" parent="." instance=ExtResource("4_1t188")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.24609, 3.05389, -16.6062)
+size = Vector3(2.76743, 0.147461, 3.32788)
+
+[node name="Platfrom6" parent="." instance=ExtResource("4_1t188")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.24609, 3.69044, -11.8093)
+size = Vector3(2.76743, 0.147461, 3.32788)
+
+[node name="Platfrom7" parent="." instance=ExtResource("4_1t188")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5953, 4.15881, -9.55599)
+size = Vector3(2.76743, 0.147461, 3.32788)
+
+[node name="Platfrom8" parent="." instance=ExtResource("4_1t188")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.848982, 22.6808, 0.233673)
+size = Vector3(2.76743, 0.147461, 3.32788)
+
+[node name="Wall" parent="." instance=ExtResource("5_naufr")]
+transform = Transform3D(-0.00851709, 0, 0.999964, 0, 1, 0, -0.999964, 0, -0.00851709, 15.2272, 4.58803, -16.5254)
+size = Vector3(29.0106, 9, 0.110352)
+
+[node name="Wall2" parent="." instance=ExtResource("5_naufr")]
+transform = Transform3D(-0.00851709, 0, 0.999964, 0, 1, 0, -0.999964, 0, -0.00851709, 20.3694, 4.58803, -16.5254)
+size = Vector3(29.0106, 9, 0.110352)
+
+[node name="Wall3" parent="." instance=ExtResource("5_naufr")]
+transform = Transform3D(0.0545494, 0, -0.998512, 0, 1, 0, 0.998512, 0, 0.0545494, 9.34641, 4.4815, 18.8395)
+size = Vector3(29.0106, 9, 0.110352)
+
+[node name="Wall4" parent="." instance=ExtResource("5_naufr")]
+transform = Transform3D(0.0545494, 0, -0.998512, 0, 1, 0, 0.998512, 0, 0.0545494, 4.20967, 4.4815, 19.0763)
+size = Vector3(29.0106, 9, 0.110352)
+
+[node name="Platfrom3" parent="." instance=ExtResource("4_1t188")]
+transform = Transform3D(0.0834692, 0, -0.99651, 0, 1, 0, 0.99651, 0, 0.0834692, 6.16706, 1.77206, 6.22777)
+size = Vector3(1.38286, 0.147461, 5.23383)
+
+[node name="Platfrom4" parent="." instance=ExtResource("4_1t188")]
+transform = Transform3D(0.0834692, 0, -0.99651, 0, 1, 0, 0.99651, 0, 0.0834692, 6.54726, 1.77206, 14.4108)
+size = Vector3(1.38286, 0.147461, 5.38275)
+
+[node name="Platfrom5" parent="." instance=ExtResource("4_1t188")]
+transform = Transform3D(0.0834692, 0, -0.99651, 0, 1, 0, 0.99651, 0, 0.0834692, 7.09351, 1.77206, 25.8357)
+size = Vector3(1.38286, 0.147461, 5.30609)

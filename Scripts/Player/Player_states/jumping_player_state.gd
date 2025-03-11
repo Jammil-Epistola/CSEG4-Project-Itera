@@ -1,10 +1,25 @@
 class_name JumpingPlayerState extends PlayerMovementState
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+@export var SPEED : float = 9.0
+@export var ACCELERATION : float = 0.1
+@export var DECELERATION : float = 0.25
+@export var JUMP_VELOCITY : float = 7.2 
+@export_range(0.5,1.0,0.01) var INPUT_MULTIPLIER : float = 0.85
 
+func enter(previous_state) -> void:
+	PLAYER.velocity.y += JUMP_VELOCITY
+	ANIMATION.pause()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func update(delta):
+	PLAYER.update_gravity(delta)
+	PLAYER.update_input(SPEED * INPUT_MULTIPLIER,ACCELERATION,DECELERATION)
+	PLAYER.update_velocity()
+	
+	if Input.is_action_just_released("jump"):
+		if PLAYER.velocity.y > 0:
+			PLAYER.velocity.y = PLAYER.velocity.y /2.0
+	if PLAYER.is_on_floor():
+		transition.emit("IdlePlayerState")
+	
+	if PLAYER.velocity.y < 0: 
+		transition.emit("FallingPlayerState")
