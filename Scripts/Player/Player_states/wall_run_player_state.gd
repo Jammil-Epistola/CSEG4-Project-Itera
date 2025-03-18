@@ -107,22 +107,38 @@ func wall_jump():
 		print_debug("\n=== Wall Jump Failed: No valid wall normal ===")
 		return
 
-	var away_from_wall = -wall_normal * WALL_JUMP_FORCE * 2.0
+	# In your coordinate system:
+	# - Y axis = forward/backward and up (if you haven't rotated the world, Y is typically up).
+	# - Z axis = left/right.
+	#
+	# Here we want to push the player horizontally away from the wall using the Z component.
+	# We'll use the wall normal's Z value to determine the push, while adding an upward boost
+	# and preserving some forward momentum along the Y-axis (which you use for forward movement).
+	
+	# Calculate horizontal push along the Z axis:
+	var horizontal_push = -wall_normal.z * WALL_JUMP_FORCE * 2.0   # Increase multiplier as needed
+	
+	# Vertical boost remains in the Y direction:
 	var vertical_boost = Vector3.UP * WALL_JUMP_VERTICAL_BOOST
-	var forward_momentum = wall_run_direction * WALL_RUN_SPEED * 0.6
+	
+	# Forward momentum from player's current forward direction.
+	# Assume that PLAYER.forward_direction is set such that its Y component is the forward component.
+	# We take only the Y component (and set X and Z to zero) to add forward motion.
+	var forward_momentum = Vector3(0, PLAYER.forward_direction.y, 0) * WALL_RUN_SPEED * 0.6
 
-	var jump_direction = away_from_wall + forward_momentum + vertical_boost
+	# Combine: No X movement, vertical boost on Y, and horizontal push on Z.
+	var jump_direction = Vector3(0, vertical_boost.y, horizontal_push) + forward_momentum
+
 	PLAYER.velocity = jump_direction
 
 	stop_wall_run()
 	PLAYER.wall_run_disabled = true  
-
-	await get_tree().create_timer(0.3)
+	await get_tree().create_timer(WALL_RUN_COOLDOWN)
 	PLAYER.wall_run_disabled = false  
 
 	transition.emit("FallingPlayerState")
 
-	print_debug("\n=== Wall Jump! ===",
+	print_debug("\n=== Horizontal Wall Jump! ===",
 		"\nVelocity After:", PLAYER.velocity,
 		"\nWall Normal:", wall_normal,
 		"\nJump Direction:", jump_direction)
