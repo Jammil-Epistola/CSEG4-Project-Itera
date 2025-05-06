@@ -4,86 +4,116 @@ class_name WallRunPlayerState extends PlayerMovementState
 @onready var right_wall_check = $"../../WallCheck/RightWallCheck"
 @onready var camera = $"../../Head/Camera3D"
 
+# Wall Running Variables
 var is_wall_running = false
 var is_touching_left_wall = false
 var is_touching_right_wall = false
 var wall_normal := Vector3.ZERO
 var wall_run_direction := Vector3.ZERO
+var wall_run_timer := 0.0
 
+# Wall Run Settings
 const WALL_RUN_SPEED := 10.0
-const WALL_JUMP_FORCE := 12.0
-const WALL_JUMP_VERTICAL_BOOST := 10.0
-const GRAVITY_REDUCTION := 0.3
+const WALL_GRAVITY := 2.0
 const MIN_SPEED_REQUIRED := 9.0
-const WALL_PUSH_FORCE := 5.0
+const MAX_WALL_RUN_TIME := 2.0
+const WALL_CLIMB_SPEED := 3.0
+const GRAVITY_COUNTER_FORCE := 10.0
+
+# Camera Settings
 const MAX_TILT := 10.0
 const TILT_SPEED := 5.0
-const WALL_RUN_COOLDOWN := 0.2
-
 var camera_tilt := 0.0
 
 func _physics_process(delta):
-	# Check if touching a wall
+	# Check for walls
 	is_touching_left_wall = left_wall_check.is_colliding()
 	is_touching_right_wall = right_wall_check.is_colliding()
+	
+	# Update wall touching flags in Player class
+	PLAYER.is_touching_left_wall = is_touching_left_wall
+	PLAYER.is_touching_right_wall = is_touching_right_wall
 
 	# Update wall normal
 	if is_touching_left_wall:
 		wall_normal = left_wall_check.get_collision_normal()
+		PLAYER.last_wall_normal = wall_normal
 	elif is_touching_right_wall:
 		wall_normal = right_wall_check.get_collision_normal()
+		PLAYER.last_wall_normal = wall_normal
 	else:
-		wall_normal = Vector3.ZERO
+		if not is_wall_running:
+			wall_normal = Vector3.ZERO
 
-	# Handle Wall Run Logic
+	# Handle wall run logic
 	if is_wall_running:
 		continue_wall_run(delta)
-	elif (is_touching_left_wall or is_touching_right_wall) and PLAYER.velocity.length() >= MIN_SPEED_REQUIRED and not PLAYER.wall_run_disabled:
+	elif (is_touching_left_wall or is_touching_right_wall) and PLAYER.velocity.length() >= MIN_SPEED_REQUIRED and not PLAYER.wall_run_disabled and not PLAYER.is_wall_jumping:
 		start_wall_run()
 
 	# Smooth Camera Tilt
 	if is_wall_running:
-		if is_touching_left_wall:
-			camera_tilt = lerp(camera_tilt, -MAX_TILT, delta * TILT_SPEED)
-		elif is_touching_right_wall:
-			camera_tilt = lerp(camera_tilt, MAX_TILT, delta * TILT_SPEED)
+		camera_tilt = lerp(camera_tilt, -MAX_TILT if is_touching_left_wall else MAX_TILT, delta * TILT_SPEED)
 	else:
 		camera_tilt = lerp(camera_tilt, 0.0, delta * TILT_SPEED)
 
 	camera.rotation_degrees.z = camera_tilt
 
 func start_wall_run():
-	if PLAYER.wall_run_disabled:
+	if PLAYER.wall_run_disabled or is_wall_running:
 		return
 
 	is_wall_running = true
-	PLAYER.velocity.y = 0  # Cancel gravity
-	
+	wall_run_timer = MAX_WALL_RUN_TIME
+	PLAYER.velocity.y = 0  # Reset vertical velocity
+
 	if wall_normal == Vector3.ZERO:
-		print_debug("🚨 ERROR: Wall normal is ZERO!")
+		print_debug("🚨 Wall Run Failed: Invalid wall normal")
 		stop_wall_run()
 		return
 
+	# Calculate wall forward direction (perpendicular to wall normal)
 	var wall_forward = wall_normal.cross(Vector3.UP).normalized()
 	
-	# Ensure the direction is correct
-	if (PLAYER.forward_direction - wall_forward).length() > (PLAYER.forward_direction - -wall_forward).length():
+	# Ensure the direction aligns with player's movement
+	var dot_product = wall_forward.dot(PLAYER.forward_direction)
+	if dot_product < 0:
 		wall_forward = -wall_forward
 
 	wall_run_direction = wall_forward
 	PLAYER.velocity = wall_run_direction * WALL_RUN_SPEED
-	
-	print_debug("\n=== Wall Run Started! ===",
-		"\nVelocity:", PLAYER.velocity,
-		"\nWall Normal:", wall_normal,
-		"\nRun Direction:", wall_run_direction)
+
+	print_debug("🏃 Wall Run Started")
 
 func continue_wall_run(delta):
+	# Update wall run timer
+	wall_run_timer -= delta
+	if wall_run_timer <= 0:
+		stop_wall_run()
+		return
+
+	# Get input for wall climbing
+	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	var is_climbing = Input.is_action_pressed("sprint")
+	var is_descending = Input.is_action_pressed("crouch")
+
+	# Maintain speed along the wall
 	var forward_speed = max(PLAYER.velocity.dot(wall_run_direction), WALL_RUN_SPEED)
 	PLAYER.velocity = wall_run_direction * forward_speed
-	PLAYER.velocity.y = 0  # No vertical movement
+	
+	# Handle wall climbing/descending
+	if is_climbing:
+		PLAYER.velocity.y = WALL_CLIMB_SPEED
+	elif is_descending:
+		PLAYER.velocity.y = -WALL_CLIMB_SPEED
+	else:
+		# Apply reduced gravity
+		PLAYER.velocity.y -= WALL_GRAVITY * delta
 
-	# Stop if not touching a wall
+	# Apply gravity counter force
+	PLAYER.velocity.y += GRAVITY_COUNTER_FORCE * delta
+
+	# Stop if no longer touching a wall
 	if not is_touching_left_wall and not is_touching_right_wall:
 		stop_wall_run()
 
@@ -92,53 +122,29 @@ func stop_wall_run():
 		return
 
 	is_wall_running = false
-	PLAYER.velocity.y = -5  # Slight drop effect
-	transition.emit("FallingPlayerState")
+	PLAYER.is_wall_running = false
+	wall_run_timer = 0.0
 
-	print_debug("\n=== Wall Run Stopped! ===", 
-		"\nVelocity:", PLAYER.velocity)
+	# Store the last valid wall normal
+	if wall_normal != Vector3.ZERO:
+		PLAYER.last_wall_normal = wall_normal
+		print_debug("🛑 Wall Run Stopped")
+	else:
+		print_debug("⚠️ Wall Run Stopped: Invalid wall normal")
+
+	# Apply a small downward velocity
+	PLAYER.velocity.y = -5
+	transition.emit("FallingPlayerState")
 
 func _input(event):
-	if Input.is_action_just_pressed("jump") and is_wall_running:
-		wall_jump()
-
-func wall_jump():
-	if wall_normal == Vector3.ZERO:
-		print_debug("\n=== Wall Jump Failed: No valid wall normal ===")
-		return
-
-	# In your coordinate system:
-	# - Y axis = forward/backward and up (if you haven't rotated the world, Y is typically up).
-	# - Z axis = left/right.
-	#
-	# Here we want to push the player horizontally away from the wall using the Z component.
-	# We'll use the wall normal's Z value to determine the push, while adding an upward boost
-	# and preserving some forward momentum along the Y-axis (which you use for forward movement).
-	
-	# Calculate horizontal push along the Z axis:
-	var horizontal_push = -wall_normal.z * WALL_JUMP_FORCE * 2.0   # Increase multiplier as needed
-	
-	# Vertical boost remains in the Y direction:
-	var vertical_boost = Vector3.UP * WALL_JUMP_VERTICAL_BOOST
-	
-	# Forward momentum from player's current forward direction.
-	# Assume that PLAYER.forward_direction is set such that its Y component is the forward component.
-	# We take only the Y component (and set X and Z to zero) to add forward motion.
-	var forward_momentum = Vector3(0, PLAYER.forward_direction.y, 0) * WALL_RUN_SPEED * 0.6
-
-	# Combine: No X movement, vertical boost on Y, and horizontal push on Z.
-	var jump_direction = Vector3(0, vertical_boost.y, horizontal_push) + forward_momentum
-
-	PLAYER.velocity = jump_direction
-
-	stop_wall_run()
-	PLAYER.wall_run_disabled = true  
-	await get_tree().create_timer(WALL_RUN_COOLDOWN)
-	PLAYER.wall_run_disabled = false  
-
-	transition.emit("FallingPlayerState")
-
-	print_debug("\n=== Horizontal Wall Jump! ===",
-		"\nVelocity After:", PLAYER.velocity,
-		"\nWall Normal:", wall_normal,
-		"\nJump Direction:", jump_direction)
+	if event.is_action_pressed("jump") and is_wall_running:
+		# Ensure we have a valid wall normal before transitioning
+		if wall_normal != Vector3.ZERO:
+			PLAYER.last_wall_normal = wall_normal
+			print_debug("🦘 Wall Jump Triggered")
+			# Stop wall running before transitioning
+			is_wall_running = false
+			PLAYER.is_wall_running = false
+			transition.emit("WallJumpPlayerState")
+		else:
+			print_debug("⚠️ Wall Jump Failed: Invalid wall normal")

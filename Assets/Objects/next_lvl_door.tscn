@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://dvhjhgkl25n6j"]
+
+[ext_resource type="Script" uid="uid://2aupufvnfs6u" path="res://Scripts/Others/next_lvl.gd" id="1_5pg4d"]
+[ext_resource type="Texture2D" uid="uid://cw1wjuoejhn1g" path="res://PNG/Dark/texture_11.png" id="1_duem1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5pg4d"]
+albedo_texture = ExtResource("1_duem1")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_ihdra"]
+material = SubResource("StandardMaterial3D_5pg4d")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_esyy2"]
+size = Vector3(1.82135, 2.0155, 1.37653)
+
+[node name="NextLvlDoor" type="Area3D"]
+collision_mask = 2
+script = ExtResource("1_5pg4d")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.53656, 0, 0, 0, 2, 0, 0, 0, 0.496, 0, 1.03113, 0)
+mesh = SubResource("BoxMesh_ihdra")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0277405, 1.02048, -0.0260315)
+shape = SubResource("BoxShape3D_esyy2")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

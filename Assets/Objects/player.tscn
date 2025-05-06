@@ -1,6 +1,7 @@
-[gd_scene load_steps=26 format=3 uid="uid://br1fdpb7yan83"]
+[gd_scene load_steps=27 format=3 uid="uid://br1fdpb7yan83"]
 
 [ext_resource type="Script" uid="uid://do2s0tf3bcqob" path="res://Scripts/Player/player_controller.gd" id="1_uf6o1"]
+[ext_resource type="PackedScene" uid="uid://dhcfaqyjpoard" path="res://Interact_System/interact_ray.tscn" id="2_72sl4"]
 [ext_resource type="Script" uid="uid://dfcraafnehyqn" path="res://Scripts/Player/reticle.gd" id="2_f82lh"]
 [ext_resource type="Theme" uid="uid://di4uxb41akeps" path="res://UI/themes/debug.tres" id="3_latgb"]
 [ext_resource type="Script" uid="uid://c8j0hkh6527yk" path="res://Scripts/Others/debug.gd" id="4_tel0m"]
@@ -13,7 +14,7 @@
 [ext_resource type="Script" uid="uid://kye53ldwot7x" path="res://Scripts/Player/Player_states/jumping_player_state.gd" id="8_4whux"]
 [ext_resource type="Script" uid="uid://ckqw7s26q3j6r" path="res://Scripts/Player/Player_states/falling_player_state.gd" id="9_ihh5j"]
 [ext_resource type="Script" uid="uid://dx7nmiy3wodd6" path="res://Scripts/Player/Player_states/wall_run_player_state.gd" id="10_aypfj"]
-[ext_resource type="Script" uid="uid://bhtuxx8blkkjy" path="res://Assets/Objects/wall_jump_player_state.gd" id="11_wnki6"]
+[ext_resource type="Script" uid="uid://bhtuxx8blkkjy" path="res://Scripts/Player/Player_states/wall_jump_player_state.gd" id="11_wnki6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fifh5"]
 
@@ -307,8 +308,8 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "ANIMATIONPLAYER", "CROUCH_SHAPECAST")]
-collision_layer = 2
-collision_mask = 127
+collision_layer = 6
+collision_mask = 123
 script = ExtResource("1_uf6o1")
 CAMERA_CONTROLLER = NodePath("Head/Camera3D")
 ANIMATIONPLAYER = NodePath("AnimationPlayer")
@@ -327,6 +328,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 current = true
+
+[node name="InteractRay" parent="Head/Camera3D" instance=ExtResource("2_72sl4")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

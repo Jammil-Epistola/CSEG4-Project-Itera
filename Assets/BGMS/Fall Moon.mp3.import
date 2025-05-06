@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cbayu1nwi1knv"
+path="res://.godot/imported/Fall Moon.mp3-d8ad7b1c71c3bb9ee77dee387d86d86c.mp3str"
+
+[deps]
+
+source_file="res://Assets/BGMS/Fall Moon.mp3"
+dest_files=["res://.godot/imported/Fall Moon.mp3-d8ad7b1c71c3bb9ee77dee387d86d86c.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

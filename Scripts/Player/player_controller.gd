@@ -19,8 +19,12 @@ var t_bob: float = 0.0
 
 #WallRun
 var wall_normal: Vector3 = Vector3.ZERO
+var last_wall_normal := Vector3.ZERO
 var is_wall_running: bool = false
 var wall_run_disabled: bool = false
+var is_wall_jumping: bool = false
+var is_touching_left_wall: bool = false
+var is_touching_right_wall: bool = false
 
 # Mouse Input
 var _mouse_input : bool = false
