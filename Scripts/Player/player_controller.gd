@@ -48,7 +48,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _input(event):
 	# Exit Game
-	if event.is_action_pressed("exit"):
+	if event.is_action_pressed("pause"):
 		get_tree().quit()
  
 func _update_camera(delta):

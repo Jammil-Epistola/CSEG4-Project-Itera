@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://br1fdpb7yan83"]
+[gd_scene load_steps=28 format=3 uid="uid://br1fdpb7yan83"]
 
 [ext_resource type="Script" uid="uid://do2s0tf3bcqob" path="res://Scripts/Player/player_controller.gd" id="1_uf6o1"]
 [ext_resource type="PackedScene" uid="uid://dhcfaqyjpoard" path="res://Interact_System/interact_ray.tscn" id="2_72sl4"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://ckqw7s26q3j6r" path="res://Scripts/Player/Player_states/falling_player_state.gd" id="9_ihh5j"]
 [ext_resource type="Script" uid="uid://dx7nmiy3wodd6" path="res://Scripts/Player/Player_states/wall_run_player_state.gd" id="10_aypfj"]
 [ext_resource type="Script" uid="uid://bhtuxx8blkkjy" path="res://Scripts/Player/Player_states/wall_jump_player_state.gd" id="11_wnki6"]
+[ext_resource type="PackedScene" uid="uid://b05qkaa68vaw8" path="res://Scenes/Menu Scenes/pause_menu.tscn" id="16_0i2re"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fifh5"]
 
@@ -451,3 +452,5 @@ offset_bottom = 40.0
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UserInterface/DebugPanel/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("16_0i2re")]

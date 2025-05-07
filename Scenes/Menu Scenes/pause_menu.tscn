@@ -1,0 +1,138 @@
+[gd_scene load_steps=7 format=3 uid="uid://b05qkaa68vaw8"]
+
+[ext_resource type="Script" uid="uid://bt2ia6kejd302" path="res://Scripts/Menu/pause_menu.gd" id="1_q6743"]
+[ext_resource type="Shader" uid="uid://dgnp4mg1yuain" path="res://UI/pause_menu.gdshader" id="1_y6rjm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q6743"]
+shader = ExtResource("1_y6rjm")
+shader_parameter/lod = 0.0
+
+[sub_resource type="Animation" id="Animation_yif2b"]
+resource_name = "blur"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/lod")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.8]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Bg:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_oi4n8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/lod")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Bg:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gnmdy"]
+_data = {
+&"RESET": SubResource("Animation_oi4n8"),
+&"blur": SubResource("Animation_yif2b")
+}
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_q6743")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_q6743")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Bg" type="Panel" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 387.0
+grow_vertical = 2
+
+[node name="Title Name" type="Label" parent="Bg"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.28
+anchor_right = 0.5
+anchor_bottom = 0.28
+offset_left = -153.0
+offset_top = -70.44
+offset_right = 165.0
+offset_bottom = 70.56
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "PROJECT: 
+              ITERA"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Bg"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+offset_top = 380.0
+offset_right = 385.0
+offset_bottom = 580.0
+theme_override_constants/separation = 43
+
+[node name="ResumeBtn" type="Button" parent="Bg/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "RESUME"
+
+[node name="QuitBtn" type="Button" parent="Bg/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "QUIT"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_gnmdy")
+}
+
+[connection signal="pressed" from="Bg/VBoxContainer/ResumeBtn" to="." method="_on_resume_btn_pressed"]
+[connection signal="pressed" from="Bg/VBoxContainer/QuitBtn" to="." method="_on_quit_btn_pressed"]
